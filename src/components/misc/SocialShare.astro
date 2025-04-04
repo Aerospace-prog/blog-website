@@ -1,0 +1,74 @@
+---
+import { Icon } from 'astro-icon/components'
+
+interface Props {
+  title: string
+  url: string
+  class?: string
+}
+
+const { title, url } = Astro.props
+const className = Astro.props.class || ''
+
+const encodedTitle = encodeURIComponent(title)
+const encodedUrl = encodeURIComponent(url)
+
+const shareLinks = {
+  twitter: `https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}`,
+  facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
+  linkedin: `https://www.linkedin.com/shareArticle?mini=true&url=${encodedUrl}&title=${encodedTitle}`,
+  reddit: `https://www.reddit.com/submit?url=${encodedUrl}&title=${encodedTitle}`,
+  whatsapp: `https://api.whatsapp.com/send?text=${encodedTitle}%20${encodedUrl}`,
+}
+---
+<div class={`flex gap-2 ${className}`}>
+  <a
+    href={shareLinks.twitter}
+    target="_blank"
+    rel="noopener noreferrer"
+    class="btn-regular w-10 h-10 rounded-xl bg-[var(--btn-regular-bg)] hover:bg-[var(--btn-regular-bg-hover)] active:bg-[var(--btn-regular-bg-active)] active:scale-95"
+    aria-label="Share on Twitter"
+  >
+    <Icon name="fa6-brands:twitter" class="text-[var(--primary)] text-xl" />
+  </a>
+  
+  <a
+    href={shareLinks.facebook}
+    target="_blank"
+    rel="noopener noreferrer"
+    class="btn-regular w-10 h-10 rounded-xl bg-[var(--btn-regular-bg)] hover:bg-[var(--btn-regular-bg-hover)] active:bg-[var(--btn-regular-bg-active)] active:scale-95"
+    aria-label="Share on Facebook"
+  >
+    <Icon name="fa6-brands:facebook" class="text-[var(--primary)] text-xl" />
+  </a>
+  
+  <a
+    href={shareLinks.linkedin}
+    target="_blank"
+    rel="noopener noreferrer"
+    class="btn-regular w-10 h-10 rounded-xl bg-[var(--btn-regular-bg)] hover:bg-[var(--btn-regular-bg-hover)] active:bg-[var(--btn-regular-bg-active)] active:scale-95"
+    aria-label="Share on LinkedIn"
+  >
+    <Icon name="fa6-brands:linkedin" class="text-[var(--primary)] text-xl" />
+  </a>
+  
+  <a
+    href={shareLinks.reddit}
+    target="_blank"
+    rel="noopener noreferrer"
+    class="btn-regular w-10 h-10 rounded-xl bg-[var(--btn-regular-bg)] hover:bg-[var(--btn-regular-bg-hover)] active:bg-[var(--btn-regular-bg-active)] active:scale-95"
+    aria-label="Share on Reddit"
+  >
+    <Icon name="fa6-brands:reddit" class="text-[var(--primary)] text-xl" />
+  </a>
+  
+  <a
+    href={shareLinks.whatsapp}
+    target="_blank"
+    rel="noopener noreferrer"
+    class="btn-regular w-10 h-10 rounded-xl bg-[var(--btn-regular-bg)] hover:bg-[var(--btn-regular-bg-hover)] active:bg-[var(--btn-regular-bg-active)] active:scale-95"
+    aria-label="Share on WhatsApp"
+  >
+    <Icon name="fa6-brands:whatsapp" class="text-[var(--primary)] text-xl" />
+  </a>
+</div> 
