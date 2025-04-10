@@ -13,18 +13,23 @@ import PostMetadata from '../../components/PostMeta.astro'
 import ImageWrapper from '../../components/misc/ImageWrapper.astro'
 import { profileConfig, siteConfig } from '../../config'
 import { formatDateToYYYYMMDD } from '../../utils/date-utils'
+import { findRelatedPosts } from '../../utils/post-utils'
+import RelatedPosts from '../../components/RelatedPosts.astro'
 
 export async function getStaticPaths() {
   const blogEntries = await getCollection('posts', ({ data }) => {
     return import.meta.env.PROD ? data.draft !== true : true
   })
-  return blogEntries.map(entry => ({
-    params: { slug: entry.slug },
-    props: { entry },
-  }))
+  return blogEntries.map(entry => {
+    const relatedPosts = findRelatedPosts(entry, blogEntries)
+    return {
+      params: { slug: entry.slug },
+      props: { entry, relatedPosts },
+    }
+  })
 }
 
-const { entry } = Astro.props
+const { entry, relatedPosts } = Astro.props
 const { Content } = await entry.render()
 
 const { remarkPluginFrontmatter } = await entry.render()
@@ -105,6 +110,11 @@ const jsonLd = {
 
             {licenseConfig.enable && <License title={entry.data.title} slug={entry.slug} pubDate={entry.data.published} class="mb-6 rounded-xl license-container onload-animation"></License>}
 
+            <RelatedPosts
+                currentPost={entry}
+                relatedPosts={relatedPosts}
+                class="mb-6 onload-animation"
+            />
         </div>
     </div>
 
