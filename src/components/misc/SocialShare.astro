@@ -1,0 +1,111 @@
+---
+import { Icon } from 'astro-icon/components'
+import {
+  Facebook,
+  Linkedin,
+  MessageCircle,
+  Share2,
+  Twitter,
+} from 'lucide-astro'
+
+interface Props {
+  title: string
+  url: string
+  class?: string
+}
+
+const { title, url, class: className } = Astro.props
+const encodedTitle = encodeURIComponent(title)
+const encodedUrl = encodeURIComponent(url)
+
+const shareLinks = [
+  {
+    name: 'Twitter',
+    url: `https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}`,
+    icon: Twitter,
+    label: 'Share on Twitter',
+  },
+  {
+    name: 'Facebook',
+    url: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
+    icon: Facebook,
+    label: 'Share on Facebook',
+  },
+  {
+    name: 'LinkedIn',
+    url: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
+    icon: Linkedin,
+    label: 'Share on LinkedIn',
+  },
+  {
+    name: 'Reddit',
+    url: `https://www.reddit.com/submit?url=${encodedUrl}&title=${encodedTitle}`,
+    icon: Share2,
+    label: 'Share on Reddit',
+  },
+  {
+    name: 'WhatsApp',
+    url: `https://api.whatsapp.com/send?text=${encodedTitle}%20${encodedUrl}`,
+    icon: MessageCircle,
+    label: 'Share on WhatsApp',
+  },
+]
+---
+
+<div class={`flex flex-wrap gap-2 ${className}`}>
+  {shareLinks.map(({ name, url, icon: IconComponent, label }) => (
+    <a
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gray-700 transition-colors hover:text-primary-600 dark:text-gray-300 dark:hover:text-primary-400"
+      aria-label={label}
+    >
+      <IconComponent class="h-4 w-4" />
+      <span>{name}</span>
+    </a>
+  ))}
+</div>
+
+<style>
+  .social-share {
+    display: flex;
+    gap: 0.5rem;
+    margin: 1rem 0;
+  }
+
+  .social-share-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    background-color: var(--color-bg-secondary);
+    color: var(--color-text);
+    transition: all 0.2s ease;
+  }
+
+  .social-share-button:hover {
+    background-color: var(--color-primary);
+    color: white;
+    transform: translateY(-2px);
+  }
+
+  .social-share-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+</style> 
